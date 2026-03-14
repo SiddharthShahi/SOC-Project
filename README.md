@@ -1,5 +1,5 @@
 # SOC-Lab-Project
-Built a home lab SOC using ELK Stack 9.3.1 on Ubuntu. Simulated an SSH brute force attack from Kali Linux, captured traffic with Wireshark, and investigated the incident using Kibana dashboards and KQL queries.
+Built a home SOC lab using ELK Stack 9.3.1 on Ubuntu. Simulated an SSH brute force attack from Kali Linux, captured traffic with Wireshark, and investigated the incident using Kibana dashboards and KQL queries.
 
 **Author:** Siddharth Shahi  
 **Platform:** Ubuntu 24.04.4 ARM64 (Victim/SIEM) | Kali Linux 2026.4 ARM64 (Attacker)  
