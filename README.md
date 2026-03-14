@@ -5,7 +5,6 @@ Built a home lab SOC using ELK Stack 9.3.1 on Ubuntu. Simulated an SSH brute for
 **Platform:** Ubuntu 24.04.4 ARM64 (Victim/SIEM) | Kali Linux 2026.4 ARM64 (Attacker)  
 **Virtualization:** UTM 9.7.4 on MacBook Air M4  
 **ELK Stack Version:** 9.3.1  
-**Date:** March 2026
 
 ---
 
@@ -23,9 +22,9 @@ Built a home lab SOC using ELK Stack 9.3.1 on Ubuntu. Simulated an SSH brute for
 
 ## Overview
 
-I made this project to actually get my hands dirty with how a SOC works in practice. I didn't want to just read about it — I wanted to set up a real SIEM, run an attack, capture the traffic, and then go through the logs to figure out what happened and when.
+I made this project to practically learn how an SOC works in practice. I wanted to set up a real SIEM, run an attack, capture the traffic, and then go through the logs to figure out what happened and when.
 
-I used two VMs on my MacBook Air M4 — one Ubuntu machine running the ELK Stack as the victim, and a Kali Linux machine as the attacker. Running everything locally made it easy to test and redo things when needed.
+I used two VMs on my MacBook: One Ubuntu machine running the ELK Stack as the victim, and a Kali Linux machine as the attacker. Running everything locally made it easy to test and redo things when needed.
 
 ---
 
@@ -54,7 +53,7 @@ I installed Elasticsearch, Logstash, and Kibana 9.3.1 on the Ubuntu VM. I set al
 
 ### Setting Up Logstash
 
-I created a pipeline config file at `/etc/logstash/conf.d/syslog.conf` to read logs from `/var/log/auth.log` and `/var/log/syslog`. The tricky part was getting the Grok pattern right — Ubuntu 24.04 logs timestamps in ISO8601 format, not the old syslog format, so I had to write a pattern that matched that.
+I created a pipeline config file at `/etc/logstash/conf.d/syslog.conf` to read logs from `/var/log/auth.log` and `/var/log/syslog`. 
 
 Here's what I pulled out of each log line:
 
@@ -90,9 +89,9 @@ I built a dashboard called **SOC Monitoring Dashboard** with three panels:
 
 **Screenshot — SOC Monitoring Dashboard:**
 
-> `SOC_Monitoring_Dashboard.png`
+![](https://github.com/SiddharthShahi/images/blob/main/SOC%20Monitoring%20Dashboard.png)
 
-The dashboard shows two clear spikes in failed SSH logins — one on March 8 and one on March 9 — both from `172.20.10.3`. That IP alone is responsible for 4,122 failed attempts.
+The dashboard shows two clear spikes in failed SSH logins: one on March 8 and one on March 9 — both from `172.20.10.3`, the attacker machine: Kali Linux. That IP alone is responsible for 4,122 failed attempts.
 
 ---
 
@@ -100,7 +99,7 @@ The dashboard shows two clear spikes in failed SSH logins — one on March 8 and
 
 ### The Attack
 
-I used Hydra on the Kali machine to brute force SSH on the Ubuntu machine. I targeted the root account using the rockyou wordlist.
+I used Hydra on the Kali machine to brute force SSH on the Ubuntu machine. I targeted the root account using the built in rockyou wordlist in Hydra.
 
 ```bash
 hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
@@ -116,29 +115,29 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
 | Speed | ~264 attempts/min |
 | Parallel connections | 16 |
 
-I ran it for about 1-2 minutes then stopped it. It didn't get in, which was expected.
+I ran it for about 1-2 minutes then stopped it. It didn't manage to penetrate the Ubuntu machine.
 
 **Screenshot — Hydra running:**
 
-> `Hydra_Attack.png`
+![](https://github.com/SiddharthShahi/images/blob/main/Hydra%20Attack.png)
 
 ### Wireshark Capture
 
-While Hydra was running, I had Wireshark open on the Ubuntu machine capturing traffic on the network interface. I used `tcp.port == 22` as a display filter to only see SSH traffic.
+While Hydra was running, I had Wireshark open on the Ubuntu machine capturing traffic on the network interface enp0s1. I used `tcp.port == 22` as a display filter to see only SSH traffic.
 
-The capture showed exactly what I expected — a huge number of SYN packets from `172.20.10.3` going to port 22 on `172.20.10.4`, one after another, very fast. Each SYN is Hydra opening a new connection to try another password. The rapid pattern across multiple source ports tells you it's running parallel connections, not one at a time.
+The capture showed a huge number of SYN packets from `172.20.10.3` going to port 22 on `172.20.10.4`, one after another. Each SYN is Hydra opening a new connection to try another password. The rapid pattern across multiple source ports tells us that it's running parallel connections, not one at a time.
 
 **Packet details:**
 
 - Source: `172.20.10.3` → Destination: `172.20.10.4`
 - Port: 22 (SSH)
 - TCP flag: `0x002` (SYN)
-- Many different source ports — parallel connections
+- Many different source ports - parallel connections
 - 4,619 packets total, 183 showing with SYN-only filter
 
 **Screenshot — Wireshark:**
 
-> `Wireshark_Demonstration.png`
+![](https://github.com/SiddharthShahi/images/blob/main/Wireshark%20Demonstration.png)
 
 ### Incident Timeline in Kibana
 
@@ -158,11 +157,11 @@ src_ip: "172.20.10.3" AND log_message: *Failed password*
 | When | March 9, 2026 @ 16:00 — 16:05 |
 | Service | sshd |
 
-The whole attack happened in about 5 minutes around 16:00, which matched up with when I ran Hydra and when I was capturing in Wireshark.
+The whole attack happened in about 5 minutes around 16:00 (4:00 PM).
 
 **Screenshot — SIEM Incident Timeline:**
 
-> `SIEM_Incident_Timeline.png`
+![](https://github.com/SiddharthShahi/images/blob/main/SIEM%20Incident%20Timeline.png)
 
 ### How It All Lines Up
 
@@ -172,15 +171,15 @@ The whole attack happened in about 5 minutes around 16:00, which matched up with
 | SIEM logs | 1,266 failed SSH attempts for root from the same IP |
 | Hydra terminal | 264 tries/min, 14.3M password list |
 
-All three matched — same IP, same port, same time window. The Wireshark capture shows it at the packet level, and the SIEM shows it at the log level. Together they tell the full story.
+All three matched - same IP, same port, same time window. The Wireshark capture shows it at the packet level, and the SIEM shows it at the log level. Together they tell the full intrusion story.
 
 ---
 
-## Task 3 — Threat Hunting
+## Threat Hunting
 
 Once the attack data was in the SIEM, I ran three searches to understand what really happened and whether anything got missed.
 
-### Hunt 1 — How Bad Was the Brute Force?
+### Hunt 1: How Intrusive Was the Brute Force?
 
 **Query:**
 ```
@@ -195,18 +194,18 @@ I ran this to see the full volume across both attack sessions (March 8 and March
 - **4,122 failed login attempts** total
 - Every single one was targeting **root**
 - All from `172.20.10.3`
-- Different source ports each time — confirms parallel connections
+- Different source ports each time - confirms parallel connections
 - Two spikes in the chart, one for each attack session
 
 **Screenshot:**
 
-> `Repeated_Failed_Logins_Kibana.png`
+![](https://github.com/SiddharthShahi/images/blob/main/Repeated%20Failed%20Logins%20Kibana.png)
 
-High volume, fully automated, only going after root. Classic brute force behavior.
+High volume, fully automated, only targeting root.
 
 ---
 
-### Hunt 2 — Did the Attack Actually Work?
+### Hunt 2: Did the Attack Actually Work?
 
 **Query:**
 ```
@@ -214,7 +213,7 @@ log_message: "Accepted password" OR log_message: "Accepted publickey"
 ```
 **Time range:** Last 7 days
 
-This was the most important check — did any login actually go through?
+This was the most important check, did any login actually go through?
 
 **What I found:**
 
@@ -223,15 +222,15 @@ This was the most important check — did any login actually go through?
 - Time: **March 8 @ 17:06:45** — 7 minutes before Hydra started at 17:13
 - Source IP: 172.20.10.3 — but this was me logging in manually before running the attack
 
-So no, the brute force didn't work. Those 3 logins were mine from before I started Hydra.
+So no, the brute force didn't work. Those 3 logins were my personal attempts before I started the Hydra attack.
 
 **Screenshot:**
 
-> `Successful_SSH_Attempt.png`
+![](https://github.com/SiddharthShahi/images/blob/main/Successful%20SSH%20Attempt.png)
 
 ---
 
-### Hunt 3 — Did Anything Else Happen?
+### Hunt 3: Did Anything Else Happen?
 
 **Query:**
 ```
@@ -239,7 +238,7 @@ src_ip: "172.20.10.3" AND NOT log_message: *Failed password*
 ```
 **Time range:** Last 7 days
 
-I wanted to see if there was anything from the attacker IP that wasn't just failed password attempts — like a reverse shell or something unexpected.
+I wanted to see if there was anything from the attacker IP that wasn't just failed password attempts like a reverse shell or something unexpected.
 
 **What I found:**
 
@@ -269,18 +268,18 @@ The attack was completely contained. sshd kept cutting off the connections and t
 
 ---
 
-## What I'd Fix
+## What I would Change/Fix 
 
-Based on what I saw during this project, here's what I'd change on a real system:
+Based on what I saw during this project, here's what I would change on a real system:
 
 **1. Turn off root SSH login**
-Root shouldn't be reachable over SSH at all. One line in `/etc/ssh/sshd_config`:
+Root shouldn't be reachable over SSH at all. This can be prevented by adding one line in `/etc/ssh/sshd_config`:
 ```
 PermitRootLogin no
 ```
 
 **2. Use SSH keys instead of passwords**
-Password-based SSH is just asking for trouble. If only key-based login is allowed, brute forcing passwords becomes pointless:
+Password-based SSH can be a security vulnerability. If only key-based login is allowed, brute forcing passwords becomes impossible, add another line in `/etc/ssh/sshd_config`:
 ```
 PasswordAuthentication no
 ```
