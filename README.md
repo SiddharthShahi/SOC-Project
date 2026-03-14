@@ -45,11 +45,11 @@ I set both VMs to bridged networking so they could talk to each other. I confirm
 
 ---
 
-## Task 1 — Setting Up the ELK Stack SIEM
+## Setting Up the ELK Stack SIEM
 
-### Installing ELK
+### Installing ELK Stack
 
-I installed Elasticsearch, Logstash, and Kibana 9.3.1 on the Ubuntu VM. I set all three to start on boot using systemd. The install itself wasn't too bad, but I did hit some issues with Logstash config — ELK 9.x dropped a few older settings so I had to look up the new ones.
+I installed Elasticsearch, Logstash, and Kibana 9.3.1 on the Ubuntu VM using: sudo apt install "xyz". I set all three to start on boot using systemd.
 
 ### Setting Up Logstash
 
@@ -87,7 +87,7 @@ I built a dashboard called **SOC Monitoring Dashboard** with three panels:
 | Top Source IPs | Table | Top 5 IPs trying to connect |
 | Authorization Activity Timeline | Area Chart | All auth log activity over time |
 
-**Screenshot — SOC Monitoring Dashboard:**
+**Screenshot: SOC Monitoring Dashboard:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/SOC%20Monitoring%20Dashboard.png)
 
@@ -95,7 +95,7 @@ The dashboard shows two clear spikes in failed SSH logins: one on March 8 and on
 
 ---
 
-## Task 2 — Running the Attack and Analyzing Traffic
+## Running the Attack and Analyzing Traffic
 
 ### The Attack
 
@@ -117,7 +117,7 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
 
 I ran it for about 1-2 minutes then stopped it. It didn't manage to penetrate the Ubuntu machine.
 
-**Screenshot — Hydra running:**
+**Screenshot: Hydra running:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Hydra%20Attack.png)
 
