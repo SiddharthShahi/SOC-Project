@@ -89,7 +89,7 @@ I built a dashboard called **SOC Monitoring Dashboard** with three panels:
 
 **Screenshot: SOC Monitoring Dashboard:**
 
-![](https://github.com/SiddharthShahi/images/blob/main/SOC%20Monitoring%20Dashboard.png)
+![](https://drive.google.com/file/d/1cqqTpweqAxNiXk0mQEb9lZwyinMXzGFg/view?usp=sharing)
 
 The dashboard shows two clear spikes in failed SSH logins: one on March 8 and one on March 9 — both from `172.20.10.3`, the attacker machine: Kali Linux. That IP alone is responsible for 4,122 failed attempts.
 
