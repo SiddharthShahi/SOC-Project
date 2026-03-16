@@ -12,11 +12,11 @@ Built a home SOC (Security Operations Center) lab using ELK (Elasticsearch, Logs
 
 1. [Overview](#overview)
 2. [Lab Setup](#lab-setup)
-3. [Task 1 — Setting Up the ELK Stack SIEM](#task-1--setting-up-the-elk-stack-siem)
-4. [Task 2 — Running the Attack and Analyzing Traffic](#task-2--running-the-attack-and-analyzing-traffic)
-5. [Task 3 — Threat Hunting](#task-3--threat-hunting)
+3. [Task 1 — Setting Up the ELK Stack SIEM](#setting-up-the-elk-stack-siem)
+4. [Task 2 — Running the Attack and Analyzing Traffic](#running-the-attack-and-analyzing-traffic)
+5. [Task 3 — Threat Hunting](#threat-hunting)
 6. [What I Found](#what-i-found)
-7. [What I would Change/Fix](#What-I-would-Change/Fix )
+7. [What I would Change/Fix](#what-i-would-change/fix )
 
 ---
 
