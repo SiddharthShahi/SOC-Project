@@ -87,7 +87,7 @@ I built a dashboard called **SOC Monitoring Dashboard** with three panels:
 | Top Source IPs | Table | Top 5 IPs trying to connect |
 | Authorization Activity Timeline | Area Chart | All auth log activity over time |
 
-**Screenshot: SOC Monitoring Dashboard demonstrating Failed SSH Logins, Top Source IPs and Authorization Activity Timeline:**
+**Screenshot demonstrating the SOC Monitoring Dashboard with Failed SSH Logins, Top Source IPs and Authorization Activity Timeline:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/SOC%20Monitoring%20Dashboard.png)
 
@@ -117,7 +117,7 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
 
 I ran it for about 1-2 minutes then stopped it. It didn't manage to penetrate the Ubuntu machine.
 
-**Screenshot: Hydra running:**
+**Screenshot demonstrating Hydra running:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Hydra%20Attack.png)
 
@@ -135,7 +135,7 @@ The capture showed a huge number of SYN packets from `172.20.10.3` going to port
 - Many different source ports - parallel connections
 - 4,619 packets total, 183 showing with SYN-only filter
 
-**Screenshot — Wireshark demonstrating Source IP, Destination IP, Destination Attack Port and Repeated SYN Flood:**
+**Screenshot demonstrating Wireshark depicting Source IP, Destination IP, Destination Attack Port and Repeated SYN Flood pattern:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Wireshark%20Demonstration.png)
 
@@ -159,7 +159,7 @@ src_ip: "172.20.10.3" AND log_message: *Failed password*
 
 The whole attack happened in about 5 minutes around 16:00 (4:00 PM).
 
-**Screenshot — SIEM Incident Timeline demonstrating the total number of logged events, Source IP, account targeted, date and time and the service used:**
+**Screenshot demonstrating the SIEM Incident Timeline showing the total number of logged events, Source IP, account targeted, date and time and the service used:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/SIEM%20Incident%20Timeline.png)
 
@@ -197,7 +197,7 @@ I ran this to see the full volume across both attack sessions (March 8 and March
 - Different source ports each time - confirms parallel connections
 - Two spikes in the chart, one for each attack session
 
-**Screenshot demonstrating failed login attempts:**
+**Screenshot demonstrating repeated failed login attempts:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Repeated%20Failed%20Logins%20Kibana.png)
 
