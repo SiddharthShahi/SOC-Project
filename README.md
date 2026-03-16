@@ -33,7 +33,7 @@ I used two VMs on my MacBook: One Ubuntu machine running the ELK Stack as the vi
 | Component | Details |
 |---|---|
 | Victim VM (Virtual Machine) | Ubuntu 24.04.4 ARM64 |
-| Attacker VM (Virtual Machine) | Kali Linux 2026.4 ARM64 |
+| Attacker VM | Kali Linux 2026.4 ARM64 |
 | Hypervisor | UTM 9.7.4 |
 | Host Machine | MacBook Air M4 |
 | Network Mode | Bridged |
