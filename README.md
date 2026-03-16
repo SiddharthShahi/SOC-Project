@@ -1,10 +1,10 @@
-# SOC-Lab-Project
-Built a home SOC lab using ELK Stack 9.3.1 on Ubuntu. Simulated an SSH brute force attack from Kali Linux, captured traffic with Wireshark, and investigated the incident using Kibana dashboards and KQL queries.
+# Home SOC Lab Project
+Built a home SOC (Security Operations Center) lab using ELK (Elasticsearch, Logstash and Kibana) Stack 9.3.1 on Ubuntu. Simulated an SSH (Secure Shell) brute force attack from Kali Linux, captured traffic with Wireshark, and investigated the incident using Kibana dashboards and KQL queries.
 
 **Author:** Siddharth Shahi  
-**Platform:** Ubuntu 24.04.4 ARM64 (Victim/SIEM) | Kali Linux 2026.4 ARM64 (Attacker)  
-**Virtualization:** UTM 9.7.4 on MacBook Air M4  
-**ELK Stack Version:** 9.3.1  
+**Platform:** Ubuntu 24.04.4 ARM64 (Victim with SIEM - Security Information and Event Management) | Kali Linux 2026.4 ARM64 (Attacker)  
+**Virtualization Platform:** UTM 9.7.4 on MacBook Air M4  
+**ELK (Elasticsearch, Logstash, Kibana) Stack Version:** 9.3.1  
 
 ---
 
@@ -32,14 +32,14 @@ I used two VMs on my MacBook: One Ubuntu machine running the ELK Stack as the vi
 
 | Component | Details |
 |---|---|
-| Victim VM | Ubuntu 24.04.4 ARM64 |
-| Attacker VM | Kali Linux 2026.4 ARM64 |
+| Victim VM (Virtual Machine) | Ubuntu 24.04.4 ARM64 |
+| Attacker VM (Virtual Machine) | Kali Linux 2026.4 ARM64 |
 | Hypervisor | UTM 9.7.4 |
 | Host Machine | MacBook Air M4 |
 | Network Mode | Bridged |
 | Victim IP | 172.20.10.4 |
 | Attacker IP | 172.20.10.3 |
-| ELK Version | 9.3.1 |
+| ELK Stack Version | 9.3.1 |
 
 I set both VMs to bridged networking so they could talk to each other. I confirmed it was working by pinging between them before starting anything.
 
@@ -87,7 +87,7 @@ I built a dashboard called **SOC Monitoring Dashboard** with three panels:
 | Top Source IPs | Table | Top 5 IPs trying to connect |
 | Authorization Activity Timeline | Area Chart | All auth log activity over time |
 
-**Screenshot: SOC Monitoring Dashboard:**
+**Screenshot: SOC Monitoring Dashboard demonstrating Failed SSH Logins, Top Source IPs and Authorization Activity Timeline:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/SOC%20Monitoring%20Dashboard.png)
 
@@ -135,7 +135,7 @@ The capture showed a huge number of SYN packets from `172.20.10.3` going to port
 - Many different source ports - parallel connections
 - 4,619 packets total, 183 showing with SYN-only filter
 
-**Screenshot — Wireshark:**
+**Screenshot — Wireshark demonstrating Source IP, Destination IP, Destination Attack Port and Repeated SYN Flood:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Wireshark%20Demonstration.png)
 
@@ -159,7 +159,7 @@ src_ip: "172.20.10.3" AND log_message: *Failed password*
 
 The whole attack happened in about 5 minutes around 16:00 (4:00 PM).
 
-**Screenshot — SIEM Incident Timeline:**
+**Screenshot — SIEM Incident Timeline demonstrating the total number of logged events, Source IP, account targeted, date and time and the service used:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/SIEM%20Incident%20Timeline.png)
 
@@ -197,7 +197,7 @@ I ran this to see the full volume across both attack sessions (March 8 and March
 - Different source ports each time - confirms parallel connections
 - Two spikes in the chart, one for each attack session
 
-**Screenshot:**
+**Screenshot demonstrating failed login attempts:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Repeated%20Failed%20Logins%20Kibana.png)
 
@@ -224,7 +224,7 @@ This was the most important check, did any login actually go through?
 
 So no, the brute force didn't work. Those 3 logins were my personal attempts before I started the Hydra attack.
 
-**Screenshot:**
+**Screenshot demonstrating accepted password SSH attemtps:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Successful%20SSH%20Attempt.png)
 
@@ -247,9 +247,9 @@ I wanted to see if there was anything from the attacker IP that wasn't just fail
 - That's just sshd closing the connection after too many failed attempts per session
 - No reverse shells, no weird outbound traffic, nothing unusual
 
-**Screenshot:**
+**Screenshot examining events other than authentication attempts:**
 
-> `Brute_Force_Failed.png`
+![](https://github.com/SiddharthShahi/images/blob/main/Brute%20Force%20Failed.png)
 
 The attack was completely contained. sshd kept cutting off the connections and the attacker never got past the login screen.
 
