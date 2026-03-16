@@ -272,28 +272,28 @@ The attack was completely contained. sshd kept cutting off the connections and t
 
 Based on what I saw during this project, here's what I would change on a real system:
 
-**1. Turn off root SSH login**
-Root shouldn't be reachable over SSH at all. This can be prevented by adding one line in `/etc/ssh/sshd_config`:
+**1. Turn off root SSH login: **
+Root shouldn't be reachable over SSH at all. This can be prevented by adding the following line in `/etc/ssh/sshd_config`:
 ```
 PermitRootLogin no
 ```
 
-**2. Use SSH keys instead of passwords**
-Password-based SSH can be a security vulnerability. If only key-based login is allowed, brute forcing passwords becomes impossible, add another line in `/etc/ssh/sshd_config`:
+**2. Use SSH keys instead of passwords: **
+Password-based SSH can be a security vulnerability. If only key-based login is allowed, brute forcing passwords becomes impossible. We can add the following line in `/etc/ssh/sshd_config`:
 ```
 PasswordAuthentication no
 ```
 
-**3. Set up fail2ban**
+**3. Set up fail2ban: **
 fail2ban would have blocked `172.20.10.3` after the first few failed attempts. The whole attack would have been stopped in seconds instead of running for minutes.
 
-**4. Limit SSH access by IP**
-Use a firewall to only allow SSH connections from trusted IPs. There's no reason random machines should even be able to reach port 22.
+**4. Limit SSH access by IP: **
+Use a firewall to only allow SSH connections from trusted IPs. Untrusted machines should not be allowed SSH access.
 
-**5. Change the SSH port**
-Moving off port 22 won't stop a determined attacker but it does cut down on random automated scanning hitting the machine.
+**5. Change the SSH port: **
+Changing the SSH port from 22 will cut down on random automated scanning hitting the machine.
 
-**6. Add alerting to the SIEM**
+**6. Add alerting to the SIEM: **
 The SIEM had all the data to detect this attack, but I only found it because I was actively looking. Setting up an alert that triggers when a single IP fails to log in more than, say, 10 times in a minute would catch this automatically.
 
 ---
