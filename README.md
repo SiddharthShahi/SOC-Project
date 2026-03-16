@@ -16,7 +16,7 @@ Built a home SOC (Security Operations Center) lab using ELK (Elasticsearch, Logs
 4. [Task 2 — Running the Attack and Analyzing Traffic](#running-the-attack-and-analyzing-traffic)
 5. [Task 3 — Threat Hunting](#threat-hunting)
 6. [What I Found](#what-i-found)
-7. [What I would Change/Fix](#what-i-would-change/fix )
+7. [What I would Change/Fix](#what-i-would-change/fix)
 
 ---
 
