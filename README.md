@@ -135,7 +135,7 @@ The capture showed a huge number of SYN packets from `172.20.10.3` going to port
 - Many different source ports - parallel connections
 - 4,619 packets total, 183 showing with SYN-only filter
 
-**Screenshot demonstrating Wireshark depicting Source IP, Destination IP, Destination Attack Port and Repeated SYN Flood pattern:**
+**Screenshot demonstrating Wireshark depicting Source IP, Destination IP, Attack Destination Port and Repeated SYN Flood pattern:**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Wireshark%20Demonstration.png)
 
