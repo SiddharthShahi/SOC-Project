@@ -109,7 +109,8 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
 
 | What | Value |
 |---|---|
-| Target | ssh://172.20.10.4:22 |
+| Target Ubuntu Machine IP | 172.20.10.4 |
+| Command Used | ssh://172.20.10.4:22 |
 | Username | root |
 | Wordlist | rockyou.txt (14,344,399 passwords) |
 | Speed | ~264 attempts/min |
