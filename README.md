@@ -117,7 +117,7 @@ hydra -l root -P /usr/share/wordlists/rockyou.txt ssh://172.20.10.4
 
 I ran it for about 1-2 minutes then stopped it. It didn't manage to penetrate the Ubuntu machine.
 
-**Screenshot demonstrating Hydra running:**
+**Screenshot demonstrating Hydra running (joel is my username on the attacker machine):**
 
 ![](https://github.com/SiddharthShahi/images/blob/main/Hydra%20Attack.png)
 
