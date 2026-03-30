@@ -49,7 +49,7 @@ I set both VMs to bridged networking so they could talk to each other. I confirm
 
 ### Installing ELK Stack
 
-I installed Elasticsearch, Logstash, and Kibana 9.3.1 on the Ubuntu VM using: sudo apt install "xyz".
+I installed Elasticsearch, Logstash, and Kibana 9.3.1 on the Ubuntu VM using: sudo apt install "tool name".
 
 ### Setting Up Logstash
 
